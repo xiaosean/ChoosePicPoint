@@ -46,35 +46,6 @@
      <string>檢測人臉特徵點</string>
     </property>
    </widget>
-   <widget class="QLabel" name="pic_view_1">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>120</y>
-      <width>58</width>
-      <height>15</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="pic_view_2">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>90</y>
-      <width>411</width>
-      <height>351</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>images/DLIB_landmarks_small.jpg</pixmap>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btn_load_pic">
     <property name="geometry">
      <rect>
@@ -100,6 +71,35 @@
     <property name="text">
      <string>讀取人臉特徵點(*.txt)</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>1221</width>
+      <height>471</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="layout_pic">
+     <item>
+      <widget class="QLabel" name="pic_view_1">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="pic_view_2">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>images/DLIB_landmarks_small.jpg</pixmap>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
