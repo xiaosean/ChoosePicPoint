@@ -126,6 +126,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def reset_image(self, image):
         self.img = image
         self.landmarks = []
+        self.__cur_landmarks_count = 0
     def draw_circles(self, image, landmarks):
         for landmark in landmarks:
             x, y = int(landmark[0]) , int(landmark[1])
