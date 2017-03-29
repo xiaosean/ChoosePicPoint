@@ -20,7 +20,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("人臉特徵點小工具")
         self.btn_load_pic.clicked.connect(self.load_image_to_pic_view_1)
-        # self.btn_load_landmarks.clicked.connect(self.load_landmarks)
+        self.btn_load_landmarks.clicked.connect(self.load_landmarks_by_file)
         self.btn_delete_last_point.clicked.connect(self.delete_last_point)
         self.set_default()
     def set_default(self):
@@ -45,27 +45,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x, y = line.split(" ")
             self.dlib_landmarks.append((x, y))
         landmarks_file.close()
-    def load_landmarks(self):
-        fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", QtCore.QDir.currentPath())
-        landmarks_file = open(fileName, "r")
-        print("filename", fileName)
-        lines = landmarks_file.read().split("\n")
-        self.landmarks = []
-        self.__cur_landmarks_count = 0
-        for line in lines:
-            x, y = line.split(" ")
-            self.landmarks.append((x, y))
-            self.__cur_landmarks_count += 1
-        landmarks_file.close()
-        update_image()
-    def is_cursor_in_img1(self):
-        if(self.x >= self.__img1_location[0] and self.x <= self.__img1_location[0] + self.pic_view_1.width()) and (self.y >= self.__img1_location[1] and self.y <= self.__img1_location[1] + self.pic_view_1.height()):
-            return True
-        return False
-    def mat2pix(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        return(QtGui.QPixmap(QtGui.QImage(image, image.shape[1], image.shape[0],
-                                  QtGui.QImage.Format_RGB888)))
     def load_image_to_pic_view_1(self):
         fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", QtCore.QDir.currentPath())
         print("filename", fileName)
@@ -75,6 +54,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.reset_image(image)
                 self.pic_view_1.resize(image.shape[0], image.shape[1])
                 self.pic_view_1.setPixmap(self.mat2pix(image))
+    def load_landmarks_by_file(self):
+        fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", QtCore.QDir.currentPath())
+        if fileName:
+            landmarks_file = open(fileName[0], "r")
+            lines = landmarks_file.read().split("\n")
+            self.landmarks = []
+            self.__cur_landmarks_count = 0
+            for line in lines:
+                x, y = line.split(" ")
+                self.landmarks.append((x, y))
+                self.__cur_landmarks_count += 1
+            landmarks_file.close()
+            self.update_image()
+    def is_cursor_in_img1(self):
+        if(self.x >= self.__img1_location[0] and self.x <= self.__img1_location[0] + self.pic_view_1.width()) and (self.y >= self.__img1_location[1] and self.y <= self.__img1_location[1] + self.pic_view_1.height()):
+            return True
+        return False
+    def mat2pix(self, image):
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return(QtGui.QPixmap(QtGui.QImage(image, image.shape[1], image.shape[0],
+                                  QtGui.QImage.Format_RGB888)))
+    
     def delete_last_point(self):
         if len(self.landmarks) > 0:
             # img1
