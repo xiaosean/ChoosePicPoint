@@ -60,13 +60,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if fileName:
             landmarks_file = open(fileName[0], "r")
             try:
-                lines = landmarks_file.read().split("\n")
+                lines = landmarks_file.read()
+                if "\r\n" in lines:
+                    lines = lines.split("\r\n")
+                elif "\n\n" in lines:
+                    lines = lines.split("\n\n")
+                else:
+                    lines = lines.split("\n")
                 self.landmarks = []
                 self.__cur_landmarks_count = 0
                 for line in lines:
-                    x, y = line.split(" ")
-                    self.landmarks.append((x, y))
-                    self.__cur_landmarks_count += 1
+                    if " " in line:
+                        x, y = line.split(" ")
+                        self.landmarks.append((x, y))
+                        self.__cur_landmarks_count += 1
                 landmarks_file.close()
                 self.update_image()
             except Exception as e:

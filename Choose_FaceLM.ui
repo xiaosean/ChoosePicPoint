@@ -75,7 +75,7 @@
      <item>
       <widget class="QLabel" name="pic_view_1">
        <property name="text">
-        <string>TextLabel</string>
+        <string/>
        </property>
       </widget>
      </item>
