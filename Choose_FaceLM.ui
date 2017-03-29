@@ -88,7 +88,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="btn_delete_point">
+   <widget class="QPushButton" name="btn_delete_last_point">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -101,7 +101,7 @@
      <string>刪除上一個點</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_load_landmarks_3">
+   <widget class="QPushButton" name="btn_export_landmarks">
     <property name="geometry">
      <rect>
       <x>390</x>
