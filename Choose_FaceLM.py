@@ -21,6 +21,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("人臉特徵點小工具")
         self.btn_load_pic.clicked.connect(self.load_image_to_pic_view_1)
         self.btn_load_landmarks.clicked.connect(self.load_landmarks_by_file)
+        self.btn_export_landmarks.clicked.connect(self.save_landmarks_by_file)
         self.btn_delete_last_point.clicked.connect(self.delete_last_point)
         self.set_default()
     def set_default(self):
@@ -58,15 +59,43 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", QtCore.QDir.currentPath())
         if fileName:
             landmarks_file = open(fileName[0], "r")
-            lines = landmarks_file.read().split("\n")
-            self.landmarks = []
-            self.__cur_landmarks_count = 0
-            for line in lines:
-                x, y = line.split(" ")
-                self.landmarks.append((x, y))
-                self.__cur_landmarks_count += 1
-            landmarks_file.close()
-            self.update_image()
+            try:
+                lines = landmarks_file.read().split("\n")
+                self.landmarks = []
+                self.__cur_landmarks_count = 0
+                for line in lines:
+                    x, y = line.split(" ")
+                    self.landmarks.append((x, y))
+                    self.__cur_landmarks_count += 1
+                landmarks_file.close()
+                self.update_image()
+            except Exception as e:
+                # raise e
+                print("load_landmarks_by_file Exception :", e)
+            else:
+                pass
+            
+    def save_landmarks_by_file(self):
+        fileName, _ = QtWidgets.QFileDialog.getSaveFileName(self, "landmarks",
+                '', "(*.txt);;All Files (*)")
+  
+        if not fileName:
+            return
+  
+        try:
+            out_file = open(str(fileName), 'w')
+            for index, landmark in enumerate(self.landmarks):
+                x, y = landmark[0], landmark[1]
+                writeline = str(x) + " " + str(y)
+                if not(index == len(self.landmarks) - 1) :
+                    writeline += "\n"
+                out_file.write(writeline)
+
+        except IOError:
+            QMessageBox.information(self, "Unable to open file",
+                    "There was an error opening \"%s\"" % fileName)
+            return
+        out_file.close()
     def is_cursor_in_img1(self):
         if(self.x >= self.__img1_location[0] and self.x <= self.__img1_location[0] + self.pic_view_1.width()) and (self.y >= self.__img1_location[1] and self.y <= self.__img1_location[1] + self.pic_view_1.height()):
             return True
@@ -74,8 +103,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def mat2pix(self, image):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return(QtGui.QPixmap(QtGui.QImage(image, image.shape[1], image.shape[0],
-                                  QtGui.QImage.Format_RGB888)))
-    
+                                  QtGui.QImage.Format_RGB888)))   
     def delete_last_point(self):
         if len(self.landmarks) > 0:
             # img1
