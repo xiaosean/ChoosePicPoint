@@ -12,6 +12,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     I can not handle menu bar
     
     '''
+    R = 133
+    G = 250
+    B = 211
+    draw_color = (B, G, R)
     __img1_location = (0, 115)
     __cur_landmarks_count = 0
     def __init__(self):
@@ -125,7 +129,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def draw_circles(self, image, landmarks):
         for landmark in landmarks:
             x, y = int(landmark[0]) , int(landmark[1])
-            cv2.circle(image, (x, y), 5, (9,90, 255), -1)
+            cv2.circle(image, (x, y), 5, self.draw_color, -1)
     def update_image(self):
         # img1
         image = self.img.copy()
@@ -143,7 +147,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             y = self.y - self.__img1_location[1]
             self.landmarks.append((x, y))
             self.__cur_landmarks_count += 1
-            print("count = %d x = %d, y = %d" % (self.__cur_landmarks_count, x, y))
+            # print("count = %d x = %d, y = %d" % (self.__cur_landmarks_count, x, y))
             self.update_image()
     def mousePressEvent(self,event):
         self.x , self.y = event.pos().x() , event.pos().y()
