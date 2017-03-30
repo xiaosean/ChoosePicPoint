@@ -56,15 +56,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("filename", fileName)
         if fileName:
             image = cv2.imread(fileName[0])
-            print("00", image.shape[0], image.shape[1])
-
             if not image is None :
-                print("0", )
                 self.reset_image(image)
                 self.pic_view_1.resize(image.shape[0], image.shape[1])
-                print("1", image.shape[0], image.shape[1])
                 self.pic_view_1.setPixmap(self.mat2pix(image))
-                print("2")
     def load_landmarks_by_file(self):
         fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", QtCore.QDir.currentPath())
         if fileName:
