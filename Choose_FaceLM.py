@@ -10,6 +10,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     ''' 
     ui and code
     I can not handle menu bar
+    filename only support english
     
     '''
     R = 133
@@ -55,10 +56,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("filename", fileName)
         if fileName:
             image = cv2.imread(fileName[0])
+            print("00", image.shape[0], image.shape[1])
+
             if not image is None :
+                print("0", )
                 self.reset_image(image)
                 self.pic_view_1.resize(image.shape[0], image.shape[1])
+                print("1", image.shape[0], image.shape[1])
                 self.pic_view_1.setPixmap(self.mat2pix(image))
+                print("2")
     def load_landmarks_by_file(self):
         fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", QtCore.QDir.currentPath())
         if fileName:
@@ -128,8 +134,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.landmarks = []
         self.__cur_landmarks_count = 0
     def draw_circles(self, image, landmarks):
-        for landmark in landmarks:
+        for index, landmark in enumerate(landmarks):
             x, y = int(landmark[0]) , int(landmark[1])
+            if index == 17:
+                self.draw_color = (190, 187, 117)
+            elif index == 27:
+                self.draw_color = (201, 16 * 12 + 12, 168)
+            elif index == 36:
+                # self.draw_color = (198, 16 * 13 + 6, 179)
+                self.draw_color = (16*9 + 7, 16 * 13 + 12, 16*8 + 15)
+            elif index == 48:
+                self.draw_color = (178, 16 * 14 + 10, 16*13 + 12)
+            elif index == 60:
+                # self.draw_color = (6*16 + 13, 16 * 13 + 6, 16*12 + 7)
+                self.draw_color = (16*12 + 2, 16 * 9 + 2, 16*14 + 14)
+            elif index == 68:
+                self.draw_color = (4*16 + 11, 16 * 11 + 11, 16*14 + 7)
             cv2.circle(image, (x, y), 5, self.draw_color, -1)
     def update_image(self):
         # img1
